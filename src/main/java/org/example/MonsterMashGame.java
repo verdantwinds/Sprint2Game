@@ -95,30 +95,47 @@ public class MonsterMashGame {
         return "Your move didn't change your distance to the treasure.";
     }
 
-    // Move the player based on input direction
-    private void movePlayer(String direction, int[] prevPos) {
+    private boolean movePlayer(String direction, int[] prevPos) {
         // Store previous position
         prevPos[0] = playerX;
         prevPos[1] = playerY;
 
-        // Update player position based on direction
+        // Validate input direction
         switch (direction.toLowerCase()) {
             case "up":
-                if (playerY > 0) playerY--;
-                break;
+                if (playerY > 0) {
+                    playerY--;
+                    return true;
+                }
+                System.out.println("You can't currently move up! Pick another direction!");
+                return false;
             case "down":
-                if (playerY < gridSize - 1) playerY++;
-                break;
+                if (playerY < gridSize - 1) {
+                    playerY++;
+                    return true;
+                }
+                System.out.println("You can't currently move down! Pick another direction!");
+                return false;
             case "left":
-                if (playerX > 0) playerX--;
-                break;
+                if (playerX > 0) {
+                    playerX--;
+                    return true;
+                }
+                System.out.println("You can't currently move left! Pick another direction!");
+                return false;
             case "right":
-                if (playerX < gridSize - 1) playerX++;
-                break;
+                if (playerX < gridSize - 1) {
+                    playerX++;
+                    return true;
+                }
+                System.out.println("You can't currently move right! Pick another direction!");
+                return false;
+            default:
+                System.out.println("Invalid direction! Please use 'up', 'down', 'left', or 'right'.");
+                return false;
         }
     }
 
-    // Main game loop
     public void play() {
         // Game introduction
         System.out.println("Welcome to the Monster Mash!");
@@ -145,14 +162,15 @@ public class MonsterMashGame {
                 break;
             }
 
-            // Move player and get directional feedback
-            movePlayer(move, prevPos);
-            System.out.println(getDirectionalHint(prevPos[0], prevPos[1]));
+            // Move player only if direction is valid
+            if (movePlayer(move, prevPos)) {
+                System.out.println(getDirectionalHint(prevPos[0], prevPos[1]));
 
-            // Check if treasure is found
-            if (playerX == treasureX && playerY == treasureY) {
-                System.out.println("Congratulations! You found the treasure!");
-                break;
+                // Check if treasure is found
+                if (playerX == treasureX && playerY == treasureY) {
+                    System.out.println("Congratulations! You found the treasure!");
+                    break;
+                }
             }
         }
 
