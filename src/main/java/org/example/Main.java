@@ -8,11 +8,11 @@ public class Main {
 
         while (true) {
             try {
-                System.out.print("Enter the dungeon size (minimum 5): ");
+                System.out.print("Enter the grid size (minimum 5): ");
                 int size = inputScanner.nextInt();
 
                 if (size < 5) {
-                    System.out.println("Dungeon size must be at least 5x5. Try again.");
+                    System.out.println("Grid size must be at least 5x5. Try again.");
                     continue;
                 }
 
