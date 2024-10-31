@@ -136,6 +136,24 @@ public class MonsterMashGame {
         }
     }
 
+
+    private void printGrid() {
+        for (int y = 0; y < gridSize; y++) {
+            for (int x = 0; x < gridSize; x++) {
+                if (x == playerX && y == playerY) {
+
+                    System.out.print(" P ");
+                } else {
+
+                    System.out.print(" . ");
+                }
+            }
+
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public void play() {
         // Game introduction
         System.out.println("Welcome to the Monster Mash!");
@@ -147,6 +165,8 @@ public class MonsterMashGame {
 
         // Continuous game loop until treasure is found or player quits
         while (true) {
+            // prints da grid
+            printGrid();
             // Show proximity hint
             System.out.println(getTreasureHint());
             // Show current position (for debugging)
