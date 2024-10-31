@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,27 +18,44 @@ public class MonsterMashGame {
     // Scanner for user input
     private Scanner scanner;
 
-    // Constructor to initialize the game with a specified grid size
-    public MonsterMashGame(int size) {
-        // Validate minimum grid size
+    private List<Monster> monsters;
+    private int initialMonsterCount;
+
+    public MonsterMashGame(int size, int monsterCount) {
+        // Validate minimum grid size and monster count
         if (size < 5) {
             throw new IllegalArgumentException("Grid size must be at least 5x5");
+        }
+        if (monsterCount < 0) {
+            throw new IllegalArgumentException("Monster count cannot be negative");
         }
 
         // Set up game parameters
         this.gridSize = size;
+        this.initialMonsterCount = monsterCount;
         random = new Random();
         scanner = new Scanner(System.in);
+        monsters = new ArrayList<>();
+
+        // List to track occupied positions
+        List<Integer[]> occupiedPositions = new ArrayList<>();
 
         // Randomly place the player on the grid
         playerX = random.nextInt(gridSize);
         playerY = random.nextInt(gridSize);
+        occupiedPositions.add(new Integer[]{playerX, playerY});
 
         // Randomly place the treasure, ensuring it's not in the same spot as the player
         do {
             treasureX = random.nextInt(gridSize);
             treasureY = random.nextInt(gridSize);
         } while (treasureX == playerX && treasureY == playerY);
+        occupiedPositions.add(new Integer[]{treasureX, treasureY});
+
+        // Spawn monsters
+        for (int i = 0; i < initialMonsterCount; i++) {
+            monsters.add(new Monster(gridSize, occupiedPositions));
+        }
     }
 
     // Calculate Euclidean distance between player and treasure
@@ -140,15 +159,23 @@ public class MonsterMashGame {
     private void printGrid() {
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
-                if (x == playerX && y == playerY) {
+                boolean monsterHere = false;
+//                for (Monster monster : monsters) {
+//                    if (x == monster.getX() && y == monster.getY()) {
+//                        System.out.print(" M ");
+//                        monsterHere = true;
+//                        break;
+//                    }
+//                }
 
-                    System.out.print(" P ");
-                } else {
-
-                    System.out.print(" . ");
-                }
+//                if (!monsterHere) {
+                    if (x == playerX && y == playerY) {
+                        System.out.print(" P ");
+                    } else {
+                        System.out.print(" . ");
+                    }
+//                }
             }
-
             System.out.println();
         }
         System.out.println();
@@ -158,13 +185,35 @@ public class MonsterMashGame {
         // Game introduction
         System.out.println("Welcome to the Monster Mash!");
         System.out.println("Move using 'up', 'down', 'left', 'right'.");
-        System.out.println("Find the treasure without getting caught by the monsters!");
+        System.out.println("Find the treasure while avoiding monsters!");
 
         // Array to track previous position
         int[] prevPos = new int[2];
 
-        // Continuous game loop until treasure is found or player quits
+        // Continuous game loop until treasure is found or player quits/dies
         while (true) {
+            // Check for monsters near the player
+            for (Monster monster : monsters) {
+                if (monster.isNearPlayer(playerX, playerY)) {
+                    System.out.println(monster.getName() + " is lurking nearby... *spooky sounds*");
+                }
+
+                // Check if player is on the same position as a monster
+                if (monster.isOnSamePosition(playerX, playerY)) {
+                    System.out.println(monster.getName() + " blocks your path!");
+
+                    // Riddle challenge
+                    if (monster.challengePlayer(scanner)) {
+                        System.out.println("Congratulations! You solved the riddle and the monster vanishes!");
+                        monsters.remove(monster);
+                        break;
+                    } else {
+                        System.out.println("Wrong answer! " + monster.getName() + " attacks and defeats you!");
+                        return;
+                    }
+                }
+            }
+
             // prints da grid
             printGrid();
             // Show proximity hint
