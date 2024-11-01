@@ -68,6 +68,9 @@ public class ChasingMonster extends Monster {
         int currentX = this.x;
         int currentY = this.y;
 
+        if (currentX == playerX && currentY == playerY) {
+            return;
+        }
 
         int[][] possibleMoves = {
                 {currentX, currentY - 1},

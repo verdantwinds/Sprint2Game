@@ -30,7 +30,7 @@ public class Monster {
 
 
         String[] monsterNames = {"Spooky", "Ghastly", "Creepy", "Haunting", "Terrifying"};
-        String[] monsterTypes = {"Zombie", "Ghost", "Vampire", "Werewolf", "Demon"};
+        String[] monsterTypes = {"Zombie \uD83E\uDDDF", "Ghost \uD83D\uDC7B", "Vampire \uD83E\uDDDB", "Werewolf \uD83D\uDC3A", "Demon \uD83D\uDC79"};
         this.name = monsterNames[random.nextInt(monsterNames.length)] + " " +
                 monsterTypes[random.nextInt(monsterTypes.length)];
 
