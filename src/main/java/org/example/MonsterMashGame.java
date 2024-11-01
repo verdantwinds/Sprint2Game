@@ -21,7 +21,24 @@ public class MonsterMashGame {
     private List<Monster> monsters;
     private int initialMonsterCount;
 
-    private int playerEmoji = 0x1F9D9;
+    private final int playerEmoji = 0x1F9D9;
+
+    private final String[] forestEmojis = {
+            "🌲",
+            "🌳",
+            "🍂",
+            "🌿",
+            "🍄"
+    };
+
+    private final String[] spookyEmojis = {
+            "⚰️",
+            "🕸️",
+            "🦇",
+            "💀",
+            "🪦"
+    };
+
 
     public MonsterMashGame(int size, int monsterCount) {
         // Validate minimum grid size and monster count
@@ -163,27 +180,54 @@ public class MonsterMashGame {
 
 
     private void printGrid() {
+
+        Random emojiRandom = new Random();
+        String[][] gridLayout = new String[gridSize][gridSize];
+
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
-//                boolean monsterHere = false;
+                if (x == playerX && y == playerY) {
+                    gridLayout[y][x] = "🧙";
+                } else if (x == treasureX && y == treasureY) {
+
+                    gridLayout[y][x] = forestEmojis[emojiRandom.nextInt(forestEmojis.length)];
+                } else {
+
+                    if (emojiRandom.nextInt(100) < 80) {
+                        gridLayout[y][x] = forestEmojis[emojiRandom.nextInt(forestEmojis.length)];
+                    } else {
+                        gridLayout[y][x] = spookyEmojis[emojiRandom.nextInt(spookyEmojis.length)];
+                    }
+                }
+
+
 //                for (Monster monster : monsters) {
 //                    if (x == monster.getX() && y == monster.getY()) {
-//                        System.out.print(" M ");
-//                        monsterHere = true;
-//                        break;
+//                        if (monster instanceof RiddleMonster) {
+//                            gridLayout[y][x] = "👻";
+//                        } else if (monster instanceof ChasingMonster) {
+//                            gridLayout[y][x] = "👹";
+//                        }
 //                    }
 //                }
-
-                //if (!monsterHere) {
-                    if (x == playerX && y == playerY) {
-                        System.out.print(Character.toString(playerEmoji));
-                    } else {
-                        System.out.print(" . ");
-                    }
-                //}
             }
-            System.out.println();
         }
+
+        // prints da border
+        System.out.println("🌫️ ".repeat(gridSize + 2));
+        for (int y = 0; y < gridSize; y++) {
+            System.out.print("🌫️");
+            for (int x = 0; x < gridSize; x++) {
+                System.out.print(gridLayout[y][x] + " ");
+            }
+            System.out.println("🌫️");
+        }
+        System.out.println("🌫️ ".repeat(gridSize + 2));
+
+        System.out.println("🧙 - you, the player");
+//        System.out.println("👻 - riddle monster");
+//        System.out.println("👹 - chasing monster");
+        System.out.println("🌫️ - border");
         System.out.println();
     }
 

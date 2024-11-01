@@ -8,17 +8,7 @@ public class Main {
 
         while (true) {
             try {
-                String alien =
-                        "     /\\_/\\\n" +
-                                "    ( o.o )\n" +
-                                "     > ^ <\n";
-                String zombie =
-                        "    (x_x)\n" +
-                                "   /|\\\\|/\\|\n" +
-                                "  / |  | \\\n" +
-                                "    |  |\n";
-                System.out.println(alien);
-                System.out.println(zombie);
+
                 System.out.print("Enter the grid size (minimum 5): ");
                 int size = inputScanner.nextInt();
 
