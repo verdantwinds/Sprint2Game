@@ -21,6 +21,8 @@ public class MonsterMashGame {
     private List<Monster> monsters;
     private int initialMonsterCount;
 
+    private int playerEmoji = 0x1F9D9;
+
     public MonsterMashGame(int size, int monsterCount) {
         // Validate minimum grid size and monster count
         if (size < 5) {
@@ -54,7 +56,11 @@ public class MonsterMashGame {
 
         // Spawn monsters
         for (int i = 0; i < initialMonsterCount; i++) {
-            monsters.add(new Monster(gridSize, occupiedPositions));
+            if (random.nextInt() % 2 == 0) {
+                monsters.add(new RiddleMonster(gridSize, occupiedPositions));
+            } else {
+                monsters.add(new ChasingMonster(gridSize, occupiedPositions));
+            }
         }
     }
 
@@ -159,7 +165,7 @@ public class MonsterMashGame {
     private void printGrid() {
         for (int y = 0; y < gridSize; y++) {
             for (int x = 0; x < gridSize; x++) {
-                boolean monsterHere = false;
+//                boolean monsterHere = false;
 //                for (Monster monster : monsters) {
 //                    if (x == monster.getX() && y == monster.getY()) {
 //                        System.out.print(" M ");
@@ -168,13 +174,13 @@ public class MonsterMashGame {
 //                    }
 //                }
 
-//                if (!monsterHere) {
+                //if (!monsterHere) {
                     if (x == playerX && y == playerY) {
-                        System.out.print(" P ");
+                        System.out.print(Character.toString(playerEmoji));
                     } else {
                         System.out.print(" . ");
                     }
-//                }
+                //}
             }
             System.out.println();
         }
@@ -192,34 +198,19 @@ public class MonsterMashGame {
 
         // Continuous game loop until treasure is found or player quits/dies
         while (true) {
-            // Check for monsters near the player
-            for (Monster monster : monsters) {
-                if (monster.isNearPlayer(playerX, playerY)) {
-                    System.out.println(monster.getName() + " is lurking nearby... *spooky sounds*");
-                }
-
-                // Check if player is on the same position as a monster
-                if (monster.isOnSamePosition(playerX, playerY)) {
-                    System.out.println(monster.getName() + " blocks your path!");
-
-                    // Riddle challenge
-                    if (monster.challengePlayer(scanner)) {
-                        System.out.println("Congratulations! You solved the riddle and the monster vanishes!");
-                        monsters.remove(monster);
-                        break;
-                    } else {
-                        System.out.println("Wrong answer! " + monster.getName() + " attacks and defeats you!");
-                        return;
-                    }
-                }
-            }
-
             // prints da grid
             printGrid();
             // Show proximity hint
             System.out.println(getTreasureHint());
             // Show current position (for debugging)
             System.out.println("Current position: (" + playerX + ", " + playerY + ")");
+
+            // Check for monsters near the player
+            for (Monster monster : monsters) {
+                if (monster.isNearPlayer(playerX, playerY)) {
+                    System.out.println(monster.getName() + " is lurking nearby... *spooky sounds*");
+                }
+            }
 
             // Get player move
             System.out.print("Enter your move: ");
@@ -230,15 +221,45 @@ public class MonsterMashGame {
                 System.out.println("You've abandoned your hunt for the treasure...");
                 break;
             }
+            boolean monsterEncountered = false;
+            for (Monster monster : monsters) {
+                if (monster.isOnSamePosition(playerX, playerY)) {
+                    System.out.println(monster.getName() + " blocks your path!");
+                    monsterEncountered = true;
+
+                    // Handle different monster types
+                    if (monster instanceof RiddleMonster || monster instanceof ChasingMonster) {
+                        if (monster.challengePlayer(scanner)) {
+                            System.out.println("Congratulations! You answered correctly and the monster vanishes!");
+                            monsters.remove(monster);
+                            monsterEncountered = false;  // Allow the game to continue
+                            break;
+                        } else {
+                            System.out.println("Wrong answer! " + monster.getName() + " attacks and defeats you!");
+                            return;  // Game over
+                        }
+                    }
+                }
+            }
 
             // Move player only if direction is valid
             if (movePlayer(move, prevPos)) {
                 System.out.println(getDirectionalHint(prevPos[0], prevPos[1]));
 
-                // Check if treasure is found
-                if (playerX == treasureX && playerY == treasureY) {
-                    System.out.println("Congratulations! You found the treasure!");
-                    break;
+                // Only move chasing monsters if no monster was encountered
+                if (!monsterEncountered) {
+                    // Move all chasing monsters
+                    for (Monster monster : monsters) {
+                        if (monster instanceof ChasingMonster) {
+                            ((ChasingMonster) monster).moveTowardsPlayer(playerX, playerY, gridSize);
+                        }
+                    }
+
+                    // Check if treasure is found
+                    if (playerX == treasureX && playerY == treasureY) {
+                        System.out.println("Congratulations! You found the treasure!");
+                        break;
+                    }
                 }
             }
         }

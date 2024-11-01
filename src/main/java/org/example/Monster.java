@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Monster {
-    private int x;
-    private int y;
-    private String name;
-    private String riddle;
-    private String riddleAnswer;
+abstract public class Monster {
+    protected int x;
+    protected int y;
+    protected String name;
+    protected List<Integer[]> occupiedPositions;
+
 
     public Monster(int gridSize, List<Integer[]> occupiedPositions) {
         Random random = new Random();
@@ -22,6 +22,7 @@ public class Monster {
         } while (isPositionOccupied(occupiedPositions, x, y));
 
         occupiedPositions.add(new Integer[]{x, y});
+        this.occupiedPositions = occupiedPositions;
 
 
         String[] monsterNames = {"Spooky", "Ghastly", "Creepy", "Haunting", "Terrifying"};
@@ -30,17 +31,7 @@ public class Monster {
                 monsterTypes[random.nextInt(monsterTypes.length)];
 
 
-        String[][] riddleBank = {
-                {"What has keys, but no locks; space, but no room; and you can enter, but not go in?", "keyboard"},
-                {"I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", "map"},
-                {"What goes up but never comes down?", "age"},
-                {"I'm tall when I'm young, and short when I'm old. What am I?", "candle"}
-        };
 
-
-        int riddleIndex = random.nextInt(riddleBank.length);
-        this.riddle = riddleBank[riddleIndex][0];
-        this.riddleAnswer = riddleBank[riddleIndex][1];
     }
 
     public int getX() {
@@ -65,12 +56,8 @@ public class Monster {
     }
 
     public boolean challengePlayer(Scanner scanner) {
-        System.out.println(name + " appears and challenges you to a riddle!");
-        System.out.println("Riddle: " + riddle);
-        System.out.print("Your answer: ");
-        String playerAnswer = scanner.nextLine().trim().toLowerCase();
-
-        return playerAnswer.equals(riddleAnswer);
+        // implement new method
+        return false;
     }
 
     private boolean isPositionOccupied(List<Integer[]> occupiedPositions, int x, int y) {
