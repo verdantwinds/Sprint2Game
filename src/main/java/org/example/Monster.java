@@ -11,7 +11,11 @@ abstract public class Monster {
     protected String name;
     protected List<Integer[]> occupiedPositions;
 
-
+    /**
+     * Constructor for abstract class monster that determines monster name and initial position
+     * @param gridSize
+     * @param occupiedPositions
+     */
     public Monster(int gridSize, List<Integer[]> occupiedPositions) {
         Random random = new Random();
 
@@ -31,7 +35,6 @@ abstract public class Monster {
                 monsterTypes[random.nextInt(monsterTypes.length)];
 
 
-
     }
 
     public int getX() {
@@ -44,6 +47,18 @@ abstract public class Monster {
 
     public String getName() {
         return name;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isNearPlayer(int playerX, int playerY) {

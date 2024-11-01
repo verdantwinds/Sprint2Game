@@ -25,6 +25,22 @@ public class RiddleMonster extends Monster {
         this.riddleAnswer = riddleBank[riddleIndex][1];
     }
 
+    public String getRiddle() {
+        return riddle;
+    }
+
+    public void setRiddle(String riddle) {
+        this.riddle = riddle;
+    }
+
+    public String getRiddleAnswer() {
+        return riddleAnswer;
+    }
+
+    public void setRiddleAnswer(String riddleAnswer) {
+        this.riddleAnswer = riddleAnswer;
+    }
+
     @Override
     public boolean challengePlayer(Scanner scanner) {
         System.out.println(name + " appears and challenges you to a riddle!");

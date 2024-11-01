@@ -34,6 +34,22 @@ public class ChasingMonster extends Monster {
         triviaAnswers.add("green");
     }
 
+    public List<String> getTriviaQuestions() {
+        return triviaQuestions;
+    }
+
+    public void setTriviaQuestions(List<String> triviaQuestions) {
+        this.triviaQuestions = triviaQuestions;
+    }
+
+    public List<String> getTriviaAnswers() {
+        return triviaAnswers;
+    }
+
+    public void setTriviaAnswers(List<String> triviaAnswers) {
+        this.triviaAnswers = triviaAnswers;
+    }
+
     @Override
     public boolean challengePlayer(Scanner scanner) {
 
