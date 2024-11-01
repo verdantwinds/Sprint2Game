@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-abstract public class Monster {
+public class Monster {
     protected int x;
     protected int y;
     protected String name;
