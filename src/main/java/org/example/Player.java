@@ -4,10 +4,12 @@ public class Player {
     private int x;
     private int y;
     private final int emoji = 0x1F9D9;
+    private int moveCount;
 
     public Player(int x, int y) {
         this.x = x;
         this.y = y;
+        this.moveCount = 0;
     }
 
     public boolean move(String direction, int gridSize) {
@@ -18,6 +20,7 @@ public class Player {
             case "up":
                 if (y > 0) {
                     y--;
+                    moveCount++;
                     return true;
                 }
                 System.out.println("You can't currently move up! Pick another direction!");
@@ -25,6 +28,7 @@ public class Player {
             case "down":
                 if (y < gridSize - 1) {
                     y++;
+                    moveCount++;
                     return true;
                 }
                 System.out.println("You can't currently move down! Pick another direction!");
@@ -32,6 +36,7 @@ public class Player {
             case "left":
                 if (x > 0) {
                     x--;
+                    moveCount++;
                     return true;
                 }
                 System.out.println("You can't currently move left! Pick another direction!");
@@ -39,6 +44,7 @@ public class Player {
             case "right":
                 if (x < gridSize - 1) {
                     x++;
+                    moveCount++;
                     return true;
                 }
                 System.out.println("You can't currently move right! Pick another direction!");
@@ -60,5 +66,9 @@ public class Player {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getMoveCount() {
+        return moveCount;
     }
 }

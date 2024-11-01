@@ -192,6 +192,7 @@ public class MonsterMashGame {
                         treasure.incrementTreasuresCollected();
                         if (treasure.getTreasuresCollected() == treasure.getTotalTreasures()) {
                             System.out.println("Congratulations! You've collected all the treasures and won the game!");
+                            System.out.println("It took you " + player.getMoveCount() + " moves to find " + treasure.getTotalTreasures() + " treasures!");
                             for(int i = 0; i < treasure.getTotalTreasures(); i++) {
                                 System.out.print("\uD83D\uDC8E");
                             }
