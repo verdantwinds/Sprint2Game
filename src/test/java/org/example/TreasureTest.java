@@ -17,8 +17,8 @@ class TreasureTest {
     @Test
     void testTreasureInitialization() {
         // Verify that total treasures is calculated correctly (20% of grid size, rounded up)
-        assertEquals(2, treasure.getTotalTreasures(),
-                "Total treasures should be 20% of grid size (rounded up)");
+        assertEquals(3, treasure.getTotalTreasures(),
+                "Total treasures should be 30% of grid size (rounded up)");
 
         assertEquals(0, treasure.getTreasuresCollected(),
                 "Initially, no treasures should be collected");
