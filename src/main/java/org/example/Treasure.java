@@ -9,7 +9,7 @@ public class Treasure {
     public Treasure(int gridSize, int x, int y) {
         this.x = x;
         this.y = y;
-        this.totalTreasures = (int) Math.ceil(gridSize * 0.2);
+        this.totalTreasures = (int) Math.ceil(gridSize * 0.3);
         this.treasuresCollected = 0;
     }
 
