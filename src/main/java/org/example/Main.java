@@ -8,7 +8,7 @@ public class Main {
 
         while (true) {
             try {
-
+                System.out.println("MONSTER MASH");
                 System.out.print("Enter the grid size (minimum 6): ");
                 int size = inputScanner.nextInt();
 
